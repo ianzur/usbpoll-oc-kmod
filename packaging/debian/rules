@@ -1,0 +1,15 @@
+#!/usr/bin/make -f
+
+PACKAGE_VERSION = 1.4
+
+%:
+	dh $@ --with dkms
+
+override_dh_auto_install:
+	mkdir -p debian/usbpoll-oc-dkms/usr/src/usbpoll-oc-dkms-${PACKAGE_VERSION}
+	cp ../usbpoll_oc.c ../Makefile debian/usbpoll-oc-dkms/usr/src/usbpoll-oc-dkms-${PACKAGE_VERSION}/
+	cp debian/dkms.conf debian/usbpoll-oc-dkms/usr/src/usbpoll-oc-dkms-${PACKAGE_VERSION}/
+	mkdir -p debian/usbpoll-oc-dkms/lib/modules-load.d
+	echo "usbpoll_oc" > debian/usbpoll-oc-dkms/lib/modules-load.d/usbpoll-oc.conf
+
+
