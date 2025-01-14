@@ -1,4 +1,4 @@
-obj-m += gcadapter_oc.o
+obj-m += usbpoll_oc.o
 ccflags-y := -std=gnu99 -Wno-declaration-after-statement
 KERNEL_SOURCE_DIR := /lib/modules/$(shell uname -r)/build
 
