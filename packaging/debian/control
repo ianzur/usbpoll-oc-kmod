@@ -1,4 +1,4 @@
-Source: usbpoll-oc-dkms
+Source: usbpoll-oc
 Section: kernel
 Priority: optional
 Maintainer: Ian Zurutuza <ian.zurutuza@gmail.com>
@@ -6,7 +6,7 @@ Build-Depends: debhelper-compat (= 13)
 Standards-Version: 4.6.0
 Homepage: https://github.com/ianzur/usbpoll-oc-kmod
 
-Package: usbpoll-oc-dkms
+Package: usbpoll-oc
 Architecture: all
 Depends: dkms, ${misc:Depends}
 Description: Kernel module for overclocking polling rate for usb devices. 

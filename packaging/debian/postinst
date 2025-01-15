@@ -1,0 +1,2 @@
+dkms add -m usbpoll-oc -v 1.4
+dkms build -m usbpoll-oc -v 1.4 && dkms install -m usbpoll-oc -v 1.4 || true

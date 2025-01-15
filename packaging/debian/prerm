@@ -1,0 +1,1 @@
+dkms remove -m usbpoll-oc -v 1.4 --all || true

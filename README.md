@@ -1,6 +1,25 @@
-# gcadapter_oc_kmod
+# usbpoll_oc_kmod
+> Modification in this repo is mostly packaging files for debian/ubuntu systems.
+> 
+> ```
+> cd packaging
+> dpkg-buildpackage -us -uc
+> sudo dpkg -i ../usbpoll-oc_1.4_all.deb
+> ```
+>
+> This installs the kernel module as a package with dkms. This module will be 
+> recompiled when the kernel is updated.
+>
+> Then reboot the machine (or manually load the kernel module `sudo modprobe usbpoll_oc`)
+>
+> Verification: 
+>   - `lsmod | grep usbpoll_oc` should report the module is loaded
+>   - Follow dmesg to verify the bInterval change `sudo dmesg -W`
+>   - Use [evhz](https://git.sr.ht/~iank/evhz) to verify polling frequency.
 
-Kernel module for overclocking the Nintendo Wii U/Mayflash GameCube adapter.
+
+Kernel module for overclocking the usb polling rate for a mouse. 
+This can be modified for any usb device.
 
 The default overclock is from 125 Hz to 1000 Hz. Official adapters should be able to handle this but if you experience stutter or dropped inputs you can try lowering the rate to 500 Hz.
 
