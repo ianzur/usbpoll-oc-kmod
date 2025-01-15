@@ -3,9 +3,17 @@
 #include <linux/kernel.h>
 #include <linux/usb.h>
 
-// PixArt dell mouse
-#define DEVICE_VID 0x04ca
-#define DEVICE_PID 0x0061
+// PS4 controller (dualshock 4)
+//#define DEVICE_VID 0x054c
+//#define DEVICE_PID 0x09cc
+
+// Thrustmaster joystick (overclocking does not have any effect)
+//#define DEVICE_VID 0x044f
+//#define DEVICE_PID 0xb10a
+
+// cheap dell mouse
+//#define DEVICE_VID 0x04ca
+//#define DEVICE_PID 0x0061
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Hannes Mann");
@@ -21,15 +29,24 @@ static unsigned short configured_interval = 1;
 static unsigned short patch_endpoints(unsigned short interval) {
 	static unsigned short old_interval = 8;
 
+	printk(KERN_INFO "usbpoll_oc: patching endpoint\n");
+
 	if(adapter_device != NULL && adapter_device->actconfig != NULL) {
+		printk(KERN_INFO "usbpoll_oc: num interfaces = %d\n", adapter_device->actconfig->desc.bNumInterfaces);	
 		struct usb_interface* interface = adapter_device->actconfig->interface[0];
+
+		printk(KERN_INFO "usbpoll_oc: grabbing interface %s\t\tNum altsetting=%d\n", interface == NULL ? "NULL" : "NOT NULL", interface->num_altsetting);
 
 		if(interface != NULL) {
 			for(unsigned int altsetting = 0; altsetting < interface->num_altsetting; altsetting++) {
 				struct usb_host_interface* altsettingptr = &interface->altsetting[altsetting];
 
+				printk(KERN_INFO "usbpoll_oc: altsettings num endpoints: %d\n", altsettingptr->desc.bNumEndpoints);
+
 				for(__u8 endpoint = 0; endpoint < altsettingptr->desc.bNumEndpoints; endpoint++) {
-					if(altsettingptr->endpoint[endpoint].desc.bEndpointAddress == 0x81 || altsettingptr->endpoint[endpoint].desc.bEndpointAddress == 0x02) {
+					// PS4 controller
+					if(altsettingptr->endpoint[endpoint].desc.bEndpointAddress == 0x84 || altsettingptr->endpoint[endpoint].desc.bEndpointAddress == 0x03) {
+					//if(altsettingptr->endpoint[endpoint].desc.bEndpointAddress == 0x81 || altsettingptr->endpoint[endpoint].desc.bEndpointAddress == 0x02) {
 						old_interval = altsettingptr->endpoint[endpoint].desc.bInterval;
 						altsettingptr->endpoint[endpoint].desc.bInterval = interval;
 
